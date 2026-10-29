@@ -1,0 +1,1873 @@
+/* Squeekscope: a tarot deck proofed on ivory stock.
+   Inks: black, oxblood, one flat soft gold. Paper grain is an inline SVG noise tile. */
+
+:root {
+  --paper: #f3ecdd;
+  --stock: #fbf7ee;
+  --ink: #1d1915;
+  --graphite: #574f47;
+  --ox: #74202a;
+  --ox-deep: #5c1821;
+  --gold: #d9bc6e;
+  --gold-pale: #f0e3bd;
+  --gold-ink: #7e621c;
+  --rule: rgba(29, 25, 21, 0.22);
+  --chip: #ece3cf;
+  --ivory-line: #f3e7cf;
+  --display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --text: 'Work Sans', 'Segoe UI', system-ui, sans-serif;
+  --mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --flip: 950ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font: 400 17px/1.6 var(--text);
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .24 0 0 0 0 .16 .2 0 0 0 -.06'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+}
+
+a {
+  color: var(--ox);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--ox-deep);
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2.5px solid var(--ox);
+  outline-offset: 3px;
+}
+
+code,
+pre {
+  font-family: var(--mono);
+  font-size: 0.86em;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 10;
+  padding: 8px 14px;
+  background: var(--ink);
+  color: var(--stock);
+}
+
+.skip:focus {
+  top: 12px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1140px;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+@media (min-width: 640px) {
+  .wrap {
+    padding-inline: 28px;
+  }
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  border-bottom: 3px double var(--ink);
+}
+
+.masthead__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 28px;
+  padding-block: 18px 16px;
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.wordmark:hover {
+  color: var(--ink);
+}
+
+.wordmark__mark {
+  width: 38px;
+  height: 38px;
+}
+
+.wm-ring {
+  fill: none;
+  stroke: var(--ox);
+  stroke-width: 4;
+}
+
+.wm-hair {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+
+.wm-hub {
+  fill: var(--gold);
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+
+.wordmark__name {
+  font: 600 30px/1 var(--display);
+  font-variation-settings: 'opsz' 96, 'SOFT' 100, 'WONK' 1;
+  letter-spacing: 0.01em;
+}
+
+.masthead__line {
+  margin: 0;
+  max-width: 38em;
+  color: var(--graphite);
+  font: italic 400 17px/1.4 var(--display);
+  font-variation-settings: 'opsz' 18, 'SOFT' 50;
+}
+
+/* section tabs, like the department line under a newspaper's nameplate */
+.masthead__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 26px;
+  margin-top: -6px;
+}
+
+.masthead__tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  border-bottom: 3px solid transparent;
+  color: var(--graphite);
+  font: 600 12.5px/1.3 var(--text);
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.masthead__tab:hover {
+  color: var(--ink);
+}
+
+html:not([data-view='deck']) .masthead__tab[data-view-link='draw'],
+html[data-view='deck'] .masthead__tab[data-view-link='deck'] {
+  border-bottom-color: var(--ox);
+  color: var(--ox);
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 10px 18px;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  font: 600 15px/1.2 var(--text);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.btn--ink {
+  background: var(--ink);
+  color: var(--stock);
+}
+
+.btn--ink:hover {
+  background: var(--ox);
+  border-color: var(--ox);
+  color: var(--stock);
+}
+
+.btn--line {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn--line:hover {
+  background: var(--ink);
+  color: var(--stock);
+}
+
+.btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---------- the ask slip ---------- */
+
+.ask {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-block: 22px 26px;
+}
+
+.ask__field {
+  display: grid;
+  gap: 5px;
+}
+
+.ask__field label,
+.pair__label,
+.eyebrow,
+.facts dt,
+.dials dt,
+.steps__label {
+  font: 600 12.5px/1.3 var(--text);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.ask__field abbr {
+  text-decoration: none;
+}
+
+.ask input,
+.pair input {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 13px;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  background: var(--stock);
+  color: var(--ink);
+  font: 500 16px/1.3 var(--mono);
+}
+
+.ask input[type='date'] {
+  font-family: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.ask input::placeholder,
+.pair input::placeholder {
+  color: #776d64;
+}
+
+.ask input[aria-invalid='true'],
+.pair input[aria-invalid='true'] {
+  border-color: var(--ox);
+  box-shadow: inset 0 0 0 1px var(--ox);
+}
+
+.ask__more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ask__more .btn {
+  flex: 1 1 auto;
+}
+
+.ask__note {
+  margin: 0;
+  min-height: 1.5em;
+  font-size: 15px;
+  color: var(--graphite);
+}
+
+.ask__note.is-error {
+  color: var(--ox);
+  font-weight: 500;
+}
+
+@media (min-width: 760px) {
+  .ask {
+    grid-template-columns: minmax(0, 1fr) 190px auto;
+    align-items: end;
+    gap: 12px 14px;
+  }
+
+  .ask__more {
+    grid-column: 1 / -1;
+  }
+
+  .ask__more .btn {
+    flex: 0 0 auto;
+  }
+
+  .ask__note {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- the spread: proof sheet + verdict ---------- */
+
+.spread {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 34px;
+  align-items: start;
+  margin-bottom: 64px;
+}
+
+/* one column: the card fills a phone, but stops growing on a tablet */
+.proof {
+  width: 100%;
+  max-width: 440px;
+  justify-self: center;
+}
+
+@media (min-width: 880px) {
+  .spread {
+    grid-template-columns: minmax(300px, 410px) minmax(0, 1fr);
+    gap: 64px;
+  }
+
+  .proof {
+    max-width: none;
+    justify-self: stretch;
+    position: sticky;
+    top: 20px;
+  }
+}
+
+.proof__slug {
+  margin: 0 0 14px;
+  font: 500 11.5px/1.3 var(--text);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--graphite);
+  text-align: center;
+}
+
+.proof__sheet {
+  position: relative;
+}
+
+/* printer's crop marks, just outside each corner of the card */
+.crop {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.crop::before,
+.crop::after {
+  content: '';
+  position: absolute;
+  background: var(--ink);
+}
+
+.crop::before {
+  width: 10px;
+  height: 1px;
+}
+
+.crop::after {
+  width: 1px;
+  height: 10px;
+}
+
+.crop--tl {
+  top: 0;
+  left: 0;
+}
+
+.crop--tl::before {
+  right: 3px;
+  top: 0;
+}
+
+.crop--tl::after {
+  bottom: 3px;
+  left: 0;
+}
+
+.crop--tr {
+  top: 0;
+  right: 0;
+}
+
+.crop--tr::before {
+  left: 3px;
+  top: 0;
+}
+
+.crop--tr::after {
+  bottom: 3px;
+  right: 0;
+}
+
+.crop--bl {
+  bottom: 0;
+  left: 0;
+}
+
+.crop--bl::before {
+  right: 3px;
+  bottom: 0;
+}
+
+.crop--bl::after {
+  top: 3px;
+  left: 0;
+}
+
+.crop--br {
+  bottom: 0;
+  right: 0;
+}
+
+.crop--br::before {
+  left: 3px;
+  bottom: 0;
+}
+
+.crop--br::after {
+  top: 3px;
+  right: 0;
+}
+
+/* ---------- the card ---------- */
+
+.tarot {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 7 / 12;
+  perspective: 1900px;
+  container-type: inline-size;
+}
+
+.tarot__inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform var(--flip) cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.tarot[data-face='front'] .tarot__inner {
+  transform: rotateY(180deg);
+}
+
+.tarot__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 3.6cqi;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.tarot__back {
+  background: var(--ox);
+}
+
+.back-art {
+  width: 100%;
+  height: 100%;
+}
+
+.bk-field {
+  fill: var(--ox);
+}
+
+.bk-rule {
+  fill: none;
+  stroke: var(--ivory-line);
+  stroke-width: 1.6;
+}
+
+.bk-hair {
+  fill: none;
+  stroke: var(--ivory-line);
+  stroke-width: 0.7;
+}
+
+.bk-gold {
+  fill: var(--gold);
+}
+
+.bk-line {
+  fill: none;
+  stroke: var(--ivory-line);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+}
+
+.bk-hub {
+  fill: var(--gold);
+  stroke: var(--ivory-line);
+  stroke-width: 0.9;
+}
+
+.bk-title {
+  font: 600 9.4px var(--display);
+  letter-spacing: 2.6px;
+  fill: var(--ivory-line);
+  text-anchor: middle;
+}
+
+.bk-sub {
+  font: 600 5.6px var(--text);
+  letter-spacing: 1.8px;
+  fill: var(--gold);
+  text-anchor: middle;
+}
+
+.tarot__front {
+  transform: rotateY(180deg);
+  background: var(--stock);
+  border: 1.5px solid var(--ink);
+}
+
+.plate {
+  position: absolute;
+  inset: 3.6cqi;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4.6cqi 6.4cqi 5.4cqi;
+  border: 0.9cqi solid var(--ink);
+  box-shadow: inset 0 0 0 1.5cqi var(--stock), inset 0 0 0 1.85cqi var(--ink);
+}
+
+.plate__corner {
+  position: absolute;
+  width: 2.4cqi;
+  height: 2.4cqi;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.plate__corner--tl {
+  top: 3.5cqi;
+  left: 3.5cqi;
+}
+
+.plate__corner--tr {
+  top: 3.5cqi;
+  right: 3.5cqi;
+}
+
+.plate__corner--bl {
+  bottom: 3.5cqi;
+  left: 3.5cqi;
+}
+
+.plate__corner--br {
+  bottom: 3.5cqi;
+  right: 3.5cqi;
+}
+
+.plate__numeral {
+  margin-top: 1.2cqi;
+  font: 600 9.4cqi/1 var(--display);
+  font-variation-settings: 'opsz' 72, 'SOFT' 30;
+  letter-spacing: 0.05em;
+}
+
+.plate__window {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 100%;
+  aspect-ratio: 1 / 1.22;
+  margin-block: 4.2cqi 4.6cqi;
+  border: 0.45cqi solid var(--ink);
+}
+
+.plate__window::before {
+  content: '';
+  position: absolute;
+  width: 82%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--gold-pale);
+}
+
+.plate__art {
+  position: relative;
+  width: 92%;
+}
+
+.plate__art .glyph {
+  width: 100%;
+  height: auto;
+}
+
+.tarot[data-reversed='true'] .plate__art .glyph {
+  transform: rotate(180deg);
+}
+
+.plate__name {
+  font: 600 6.5cqi/1.1 var(--display);
+  font-variation-settings: 'opsz' 48, 'SOFT' 20;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* a short rule with a gold diamond, between the name and the motto */
+.plate__rule {
+  position: relative;
+  width: 30cqi;
+  height: 2.4cqi;
+  margin-block: 2.6cqi 2.2cqi;
+}
+
+.plate__rule::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 0.35cqi;
+  background: var(--ink);
+}
+
+.plate__rule::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1.9cqi;
+  height: 1.9cqi;
+  background: var(--gold);
+  box-shadow: 0 0 0 1cqi var(--stock);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.plate__motto {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  max-width: 90%;
+  font: italic 400 4.7cqi/1.3 var(--display);
+  font-variation-settings: 'opsz' 14, 'SOFT' 60;
+  text-align: center;
+  color: var(--graphite);
+}
+
+.plate__stamp {
+  position: absolute;
+  right: -1.5cqi;
+  bottom: 4cqi;
+  display: none;
+  padding: 1.3cqi 2.2cqi 1.1cqi;
+  border: 0.6cqi solid var(--ox);
+  background: var(--stock);
+  color: var(--ox);
+  font: 600 3.9cqi/1 var(--text);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transform: rotate(-9deg);
+}
+
+.tarot[data-reversed='true'] .plate__stamp {
+  display: block;
+}
+
+/* glyph inks (shared by the card, the deck, the dialog and the live panel) */
+.f-ink {
+  fill: var(--ink);
+}
+
+.f-gold {
+  fill: var(--gold);
+}
+
+.f-ox {
+  fill: var(--ox);
+}
+
+.f-paper {
+  fill: var(--stock);
+}
+
+.s-ink {
+  stroke: var(--ink);
+}
+
+.s-ox {
+  stroke: var(--ox);
+}
+
+.s-paper {
+  stroke: var(--stock);
+}
+
+/* the ink bar under the proof: three house inks plus today's spot colour */
+.inkbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font: 500 12px/1.3 var(--text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.inkbar__chip {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--ink);
+}
+
+.inkbar__chip--ink {
+  background: var(--ink);
+}
+
+.inkbar__chip--ox {
+  background: var(--ox);
+}
+
+.inkbar__chip--gold {
+  background: var(--gold);
+}
+
+.inkbar__chip--spot {
+  margin-left: 6px;
+  width: 30px;
+  background: repeating-linear-gradient(135deg, transparent 0 3px, var(--rule) 3px 4px);
+}
+
+.inkbar__label {
+  margin-left: 4px;
+}
+
+/* ---------- verdict ---------- */
+
+.verdict {
+  min-width: 0;
+}
+
+.verdict__state > :first-child {
+  margin-top: 0;
+}
+
+/* the landing spotlight: with no address in the link, Squeektoshi's own card leads and the form waits folded */
+.spot {
+  display: none;
+  margin: 0 0 30px;
+  padding: 16px 18px 18px;
+  border: 1.5px solid var(--ink);
+  background: var(--stock);
+  box-shadow: inset 0 0 0 4px var(--stock), inset 0 0 0 5px var(--ink);
+}
+
+html[data-spot='on'] .spot {
+  display: block;
+}
+
+html[data-spot='on'] .ask {
+  display: none;
+}
+
+html[data-spot='on'] .spread {
+  margin-top: 26px;
+}
+
+.spot__title {
+  margin: 0 0 6px;
+  font: 600 clamp(23px, 2.6vw, 27px)/1.15 var(--display);
+  font-variation-settings: 'opsz' 72, 'SOFT' 40;
+}
+
+.spot__line {
+  max-width: 34em;
+  margin: 0 0 14px;
+  color: var(--graphite);
+  font-size: 15.5px;
+  line-height: 1.5;
+}
+
+@media (max-width: 559px) {
+  .spot .btn {
+    width: 100%;
+  }
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+}
+
+.verdict__headline {
+  margin: 0 0 18px;
+  font: 600 clamp(30px, 4.4vw, 44px)/1.08 var(--display);
+  font-variation-settings: 'opsz' 96, 'SOFT' 40;
+  letter-spacing: -0.005em;
+}
+
+.verdict__lede {
+  max-width: 36em;
+  margin: 0 0 14px;
+}
+
+.verdict__lede--quiet {
+  color: var(--graphite);
+}
+
+.verdict__title {
+  margin: 0;
+  font: 600 clamp(38px, 6vw, 60px)/1.02 var(--display);
+  font-variation-settings: 'opsz' 120, 'SOFT' 30;
+  letter-spacing: -0.01em;
+}
+
+.verdict__numeral {
+  color: var(--ox);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.eyebrow__who {
+  font-family: var(--mono);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.verdict__orient {
+  display: inline-block;
+  margin: 14px 0 0;
+  padding: 3px 10px 2px;
+  border: 1.5px solid var(--ink);
+  font: 600 13px/1.4 var(--text);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.verdict__orient.is-reversed {
+  border-color: var(--ox);
+  color: var(--ox);
+}
+
+.verdict__keys {
+  margin: 14px 0 0;
+  color: var(--graphite);
+  font: italic 400 19px/1.4 var(--display);
+  font-variation-settings: 'opsz' 24;
+}
+
+.verdict__meaning {
+  max-width: 36em;
+  margin: 14px 0 0;
+  font-size: 18px;
+}
+
+.verdict__omen {
+  position: relative;
+  max-width: 34em;
+  margin: 22px 0 26px;
+  padding-left: 26px;
+}
+
+.verdict__omen::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0.55em;
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  border: 1px solid var(--gold-ink);
+  transform: rotate(45deg);
+}
+
+.verdict__omen p {
+  margin: 0;
+  font: italic 400 clamp(21px, 2.5vw, 25px)/1.35 var(--display);
+  font-variation-settings: 'opsz' 36, 'SOFT' 50;
+}
+
+.facts {
+  margin: 0 0 18px;
+  border-top: 1.5px solid var(--ink);
+}
+
+.facts__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+@media (min-width: 560px) {
+  .facts__row {
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 16px;
+    align-items: baseline;
+  }
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.facts strong {
+  font: 600 18px/1.4 var(--display);
+  font-variation-settings: 'opsz' 24;
+}
+
+.facts__aside {
+  display: block;
+  color: var(--graphite);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-right: 9px;
+  vertical-align: -3px;
+  border: 1px solid var(--ink);
+}
+
+.pips {
+  display: inline-flex;
+  gap: 5px;
+  margin-right: 10px;
+  vertical-align: 1px;
+}
+
+.pips i {
+  width: 10px;
+  height: 10px;
+  border: 1.4px solid var(--ink);
+  transform: rotate(45deg);
+}
+
+.pips i.is-on {
+  background: var(--gold);
+}
+
+.seal {
+  max-width: 40em;
+  margin: 0 0 22px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--ink);
+  background: var(--stock);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.seal b {
+  display: block;
+  margin-bottom: 2px;
+  font: 600 12.5px/1.4 var(--text);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.seal.is-provisional {
+  border-style: dashed;
+  border-color: var(--ox);
+}
+
+.seal.is-provisional b {
+  color: var(--ox);
+}
+
+.seal.is-borrowed {
+  border-style: dotted;
+}
+
+.verdict__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.verdict__hint {
+  max-width: 40em;
+  margin: 12px 0 0;
+  color: var(--graphite);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.verdict__next {
+  margin: 16px 0 0;
+  color: var(--graphite);
+  font-size: 15px;
+}
+
+/* ---------- small cards: the week strip and the pair ---------- */
+
+.chit {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 7 / 11;
+  border: 1.5px solid var(--ink);
+  border-radius: 5px;
+  background: var(--stock);
+  box-shadow: inset 0 0 0 3px var(--stock), inset 0 0 0 4px var(--ink);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.chit .glyph {
+  width: 86%;
+  height: auto;
+}
+
+.chit.is-reversed .glyph {
+  transform: rotate(180deg);
+}
+
+/* face down: the deck's back, oxblood with an ivory rule and a gold seed */
+.chit--down {
+  border-color: var(--ox);
+  background: var(--ox);
+  box-shadow: inset 0 0 0 3px var(--ox), inset 0 0 0 4px var(--ivory-line);
+}
+
+.chit--down::after {
+  content: '';
+  width: 24%;
+  aspect-ratio: 1;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+@keyframes chit-turn {
+  from {
+    transform: perspective(500px) rotateY(-90deg);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* ---------- the week strip ---------- */
+
+.week {
+  margin-bottom: 64px;
+}
+
+.week__lede {
+  max-width: 40em;
+  margin: 0 0 20px;
+  color: var(--graphite);
+}
+
+.week__row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  max-width: 880px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .week__row {
+    gap: 14px;
+  }
+}
+
+.week__row.is-turning .chit {
+  animation: chit-turn 560ms cubic-bezier(0.3, 0.7, 0.2, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+.week__day {
+  min-width: 0;
+}
+
+.week__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 0 0 4px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: center;
+}
+
+button.week__card {
+  cursor: pointer;
+}
+
+button.week__card:hover .chit {
+  border-color: var(--ox);
+  transform: translateY(-3px);
+}
+
+.week__date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font: 600 11px/1.25 var(--text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.week__dom {
+  font: 600 17px/1.15 var(--display);
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.week__numeral {
+  font: 600 13px/1.2 var(--display);
+}
+
+.week__name,
+.week__meta {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .week__date {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 5px;
+    font-size: 12px;
+  }
+
+  .week__name {
+    display: block;
+    font: 600 11.5px/1.25 var(--display);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .week__meta {
+    display: block;
+    font: 400 12px/1.3 var(--text);
+    color: var(--graphite);
+  }
+}
+
+/* the day the reading above is for */
+.week__card[aria-current] .chit {
+  outline: 2px solid var(--ox);
+  outline-offset: 3px;
+}
+
+.week__card[aria-current] .week__date,
+.week__card[aria-current] .week__dom {
+  color: var(--ox);
+}
+
+.week__card.is-provisional .chit {
+  border-style: dashed;
+  border-color: var(--ox);
+}
+
+.week__card.is-down,
+.week__card.is-down .week__dom {
+  color: var(--graphite);
+}
+
+.week__note {
+  max-width: 44em;
+  margin: 18px 0 0;
+  color: var(--graphite);
+  font-size: 15px;
+}
+
+/* ---------- two wallets ---------- */
+
+.pair {
+  margin-top: 30px;
+  padding-top: 18px;
+  border-top: 1.5px solid var(--ink);
+}
+
+.pair__label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.pair__opt {
+  margin-left: 6px;
+  font-weight: 500;
+  color: #776d64;
+}
+
+.pair__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pair__row input {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.pair__row .btn {
+  flex: 1 0 auto;
+}
+
+@media (min-width: 560px) {
+  .pair__row .btn {
+    flex-grow: 0;
+  }
+}
+
+.pair__note {
+  margin: 8px 0 0;
+  min-height: 1.5em;
+  font-size: 15px;
+  color: var(--graphite);
+}
+
+.pair__note.is-error {
+  color: var(--ox);
+  font-weight: 500;
+}
+
+.pair__result {
+  margin-top: 10px;
+  padding: 16px 16px 18px;
+  border: 1.5px solid var(--ink);
+  background: var(--stock);
+}
+
+.pair__cards {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 2px 0 14px;
+}
+
+.pair__cards .chit {
+  flex: none;
+  width: 58px;
+}
+
+.pair__steps {
+  flex: 0 1 auto;
+  padding: 2px 8px;
+  border-top: 1px dashed var(--ink);
+  border-bottom: 1px dashed var(--ink);
+  color: var(--graphite);
+  font: italic 400 15px/1.3 var(--display);
+  white-space: nowrap;
+}
+
+.pair__score {
+  margin: 0;
+  font: 600 18px/1.3 var(--display);
+}
+
+.pair__score strong {
+  color: var(--ox);
+  font: 600 46px/1 var(--display);
+  font-variation-settings: 'opsz' 96, 'SOFT' 30;
+}
+
+.pair__outof {
+  margin: 0 10px 0 2px;
+  color: var(--graphite);
+  font-size: 18px;
+}
+
+.pair__band {
+  display: inline-block;
+}
+
+.pair__text {
+  max-width: 36em;
+  margin: 10px 0 0;
+}
+
+.pair__text--round {
+  color: var(--graphite);
+  font-size: 15px;
+}
+
+.pair__clear {
+  min-height: 40px;
+  margin-top: 14px;
+  padding: 6px 14px;
+}
+
+/* ---------- live panel ---------- */
+
+.sky {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin-bottom: 64px;
+  padding: 22px 18px;
+  border: 1.5px solid var(--ink);
+  background: var(--stock);
+  box-shadow: inset 0 0 0 5px var(--stock), inset 0 0 0 6px var(--ink);
+}
+
+@media (min-width: 720px) {
+  .sky {
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 30px;
+    padding: 28px 30px;
+  }
+}
+
+.sky__art {
+  width: 150px;
+  max-width: 100%;
+  aspect-ratio: 1;
+  justify-self: center;
+}
+
+@media (min-width: 720px) {
+  .sky__art {
+    width: 100%;
+  }
+}
+
+.sky__art .glyph {
+  width: 100%;
+  height: 100%;
+}
+
+.sky__title {
+  margin: 0 0 8px;
+  font: 600 clamp(25px, 3vw, 32px)/1.12 var(--display);
+  font-variation-settings: 'opsz' 72, 'SOFT' 40;
+}
+
+.sky__line {
+  max-width: 40em;
+  margin: 0 0 18px;
+}
+
+.dials {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 0 16px;
+  border-top: 1.5px solid var(--ink);
+}
+
+@media (min-width: 900px) {
+  .dials {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.dials__cell {
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.dials dd {
+  margin: 2px 0 0;
+  font: 600 19px/1.3 var(--display);
+  font-variation-settings: 'opsz' 24;
+}
+
+.dials dd small {
+  display: block;
+  font: 400 13.5px/1.4 var(--text);
+  color: var(--graphite);
+}
+
+.sky__habit {
+  margin: 0;
+  color: var(--graphite);
+  font-size: 15px;
+}
+
+/* ---------- workings ---------- */
+
+.section-title {
+  margin: 0 0 10px;
+  font: 600 clamp(28px, 3.6vw, 38px)/1.1 var(--display);
+  font-variation-settings: 'opsz' 96, 'SOFT' 40;
+}
+
+.workings {
+  margin-bottom: 72px;
+}
+
+.workings__lede {
+  max-width: 40em;
+  margin: 0 0 22px;
+}
+
+.steps {
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+  border-top: 1.5px solid var(--ink);
+}
+
+.steps__item {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  padding: 13px 0 13px 40px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  counter-increment: step;
+}
+
+.steps__item::before {
+  content: counter(step, upper-roman);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 30px;
+  color: var(--ox);
+  font: italic 500 18px/1.3 var(--display);
+}
+
+@media (min-width: 760px) {
+  .steps__item {
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: 18px;
+    align-items: baseline;
+  }
+}
+
+.steps__body {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.steps__sub {
+  display: block;
+  margin-top: 4px;
+}
+
+.steps code,
+.recompute code,
+.workings__source code {
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--chip);
+  color: var(--ink);
+}
+
+code.hash {
+  word-break: break-all;
+}
+
+.recompute {
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--ink);
+  background: var(--stock);
+}
+
+.recompute summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.recompute pre {
+  margin: 12px 0;
+  padding: 14px;
+  overflow-x: auto;
+  background: var(--chip);
+  border-radius: 3px;
+  line-height: 1.5;
+}
+
+.recompute pre code {
+  padding: 0;
+  background: none;
+}
+
+.workings__source {
+  max-width: 48em;
+  color: var(--graphite);
+  font-size: 15px;
+}
+
+/* ---------- the deck ---------- */
+
+.deck {
+  margin-bottom: 72px;
+}
+
+.deck__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px 28px;
+  margin-bottom: 22px;
+}
+
+.deck__intro {
+  max-width: 46em;
+}
+
+.deck__lede {
+  margin: 0;
+  color: var(--graphite);
+}
+
+/* the gallery's extras stay folded away on the reading page */
+.deck__lede--deck,
+.deck__draw,
+.deck__foot,
+.deck__words {
+  display: none;
+}
+
+.deck__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .deck__grid {
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    gap: 14px;
+  }
+}
+
+.mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  aspect-ratio: 7 / 11;
+  padding: 10px 8px 12px;
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  background: var(--stock);
+  box-shadow: inset 0 0 0 4px var(--stock), inset 0 0 0 5px var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.mini:hover {
+  transform: translateY(-3px);
+  border-color: var(--ox);
+}
+
+.mini__numeral {
+  margin-top: 4px;
+  font: 600 14px/1 var(--display);
+}
+
+.mini .glyph {
+  flex: 1;
+  width: 92%;
+  min-height: 0;
+}
+
+.mini__name {
+  font: 600 11.5px/1.2 var(--display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.mini.is-drawn {
+  border-color: var(--ox);
+  box-shadow: inset 0 0 0 4px var(--stock), inset 0 0 0 5px var(--ox);
+}
+
+/* ---------- the deck as a gallery (?deck): a ruled specimen sheet of all 22 plates ---------- */
+
+html[data-view='deck'] main > :not(.deck) {
+  display: none;
+}
+
+html[data-view='deck'] .deck {
+  margin-top: 30px;
+}
+
+html[data-view='deck'] .deck__lede--draw {
+  display: none;
+}
+
+html[data-view='deck'] .deck__lede--deck,
+html[data-view='deck'] .deck__words {
+  display: block;
+}
+
+html[data-view='deck'] .deck__lede--deck {
+  margin-top: 4px;
+}
+
+html[data-view='deck'] .deck__draw {
+  display: inline-flex;
+}
+
+html[data-view='deck'] .deck__foot {
+  display: flex;
+}
+
+html[data-view='deck'] .deck__grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
+  gap: 0 34px;
+  border-top: 1.5px solid var(--ink);
+}
+
+html[data-view='deck'] .deck__item {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 18px 0 20px;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* the name is printed beside the plate here, so the small card shows numeral and art only */
+html[data-view='deck'] .mini__name {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  html[data-view='deck'] .deck__item {
+    grid-template-columns: 104px minmax(0, 1fr);
+    gap: 18px;
+  }
+}
+
+.deck__name {
+  margin: 2px 0 8px;
+  font: 600 21px/1.15 var(--display);
+  font-variation-settings: 'opsz' 48, 'SOFT' 30;
+}
+
+.deck__numeral {
+  margin-right: 0.1em;
+  color: var(--ox);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.deck__tag {
+  margin: -2px 0 10px;
+  color: var(--ox);
+  font: italic 400 15.5px/1.35 var(--display);
+  font-variation-settings: 'opsz' 18, 'SOFT' 50;
+}
+
+.deck__tag::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 9px;
+  border: 1px solid var(--gold-ink);
+  background: var(--gold);
+  transform: rotate(45deg);
+  vertical-align: 1px;
+}
+
+.deck__lines {
+  margin: 0;
+}
+
+.deck__way {
+  font: 600 11.5px/1.3 var(--text);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.deck__way--reversed {
+  color: var(--ox);
+}
+
+.deck__line {
+  margin: 2px 0 10px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.deck__line:last-child {
+  margin-bottom: 0;
+}
+
+.deck__foot {
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: 26px;
+}
+
+.deck__foot p {
+  max-width: 40em;
+  margin: 0;
+  color: var(--graphite);
+  font-size: 15px;
+}
+
+/* ---------- card dialog ---------- */
+
+.leaf {
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 22px 24px 26px;
+  border: 1.5px solid var(--ink);
+  background: var(--stock);
+  color: var(--ink);
+}
+
+.leaf::backdrop {
+  background: rgba(29, 25, 21, 0.5);
+}
+
+.leaf__close-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+}
+
+.leaf__close {
+  min-height: 38px;
+  padding: 6px 14px;
+}
+
+.leaf__art {
+  width: 160px;
+  margin: 0 auto 8px;
+}
+
+.leaf__name {
+  margin: 0;
+  font: 600 32px/1.1 var(--display);
+  font-variation-settings: 'opsz' 72, 'SOFT' 30;
+}
+
+.leaf__way {
+  margin: 18px 0 4px;
+  font: 600 12.5px/1.3 var(--text);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ox);
+}
+
+.leaf p {
+  margin: 0;
+}
+
+.leaf .verdict__omen {
+  margin-bottom: 0;
+}
+
+/* ---------- colophon ---------- */
+
+.colophon {
+  border-top: 3px double var(--ink);
+  color: var(--graphite);
+  font-size: 14.5px;
+}
+
+.colophon__row {
+  display: grid;
+  gap: 8px;
+  padding-block: 22px 34px;
+}
+
+.colophon p {
+  max-width: 52em;
+  margin: 0;
+}
+
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .tarot__inner {
+    transition: none;
+    transform: none !important;
+  }
+
+  .tarot__face {
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+    transition: opacity 160ms linear;
+  }
+
+  .tarot__front {
+    transform: none;
+    opacity: 0;
+  }
+
+  .tarot[data-face='front'] .tarot__front {
+    opacity: 1;
+  }
+
+  .tarot[data-face='front'] .tarot__back {
+    opacity: 0;
+  }
+
+  .mini,
+  .btn,
+  .chit {
+    transition: none;
+  }
+
+  .mini:hover,
+  button.week__card:hover .chit {
+    transform: none;
+  }
+
+  .week__row.is-turning .chit {
+    animation: none;
+  }
+}
