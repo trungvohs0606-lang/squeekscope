@@ -1,0 +1,15 @@
+{
+  "name": "squeekscope",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A daily hamster tarot card for any wallet, cut from Squeektoshi's settled wheel work on Sepolia.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "recompute": "node scripts/recompute.mjs"
+  },
+  "devDependencies": {
+    "viem": "2.21.55"
+  }
+}

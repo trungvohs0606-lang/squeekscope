@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Squeekscope · daily hamster tarot</title>
+  <meta name="description" content="A daily tarot card for any wallet, drawn from Squeektoshi's settled wheel work on Sepolia. Every input is public, so anyone can recompute it.">
+  <meta name="theme-color" content="#F3ECDD">
+  <meta property="og:title" content="Squeekscope">
+  <meta property="og:description" content="A daily hamster tarot for any wallet, drawn by Squeektoshi's onchain work and verifiable by anyone.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2374202A'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23D9BC6E' stroke-width='3'/%3E%3Cpath d='M16 6v20M6 16h20M9 9l14 14M23 9 9 23' stroke='%23F3E7CF' stroke-width='1.4'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%23D9BC6E'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://esm.sh" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..700,0..100,0..1;1,9..144,400..600,0..100,0..1&family=Work+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/squeekscope.css">
+  <script>
+    // Pick the layout before first paint, so nothing jumps while the modules load:
+    // ?deck opens the gallery, and a link without an address (?a=) leads with Squeektoshi's own card.
+    (function (q, root) {
+      root.dataset.view = q.has('deck') ? 'deck' : 'draw';
+      if (!q.has('a')) root.dataset.spot = 'on';
+    })(new URLSearchParams(location.search), document.documentElement);
+  </script>
+  <!-- viem 2.21.55 from esm.sh as one tree-shaken file. Importing another viem function? Add it to exports=. -->
+  <script type="importmap">
+    { "imports": { "viem": "https://esm.sh/viem@2.21.55?bundle&exports=createPublicClient,encodePacked,getAddress,http,keccak256,parseAbi,parseAbiItem" } }
+  </script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#reading">Skip to the reading</a>
+
+  <header class="masthead">
+    <div class="wrap masthead__row">
+      <a class="wordmark" href="./" aria-label="Squeekscope, start over">
+        <svg class="wordmark__mark" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="16" class="wm-ring"/>
+          <circle cx="20" cy="20" r="12" class="wm-hair"/>
+          <path d="M20 8v24M8 20h24M11.5 11.5l17 17M28.5 11.5l-17 17" class="wm-hair"/>
+          <circle cx="20" cy="20" r="3.4" class="wm-hub"/>
+        </svg>
+        <span class="wordmark__name">Squeekscope</span>
+      </a>
+      <p class="masthead__line">A daily hamster tarot for any wallet, cut by <span class="nowrap">Squeektoshi's</span> onchain work.</p>
+    </div>
+    <nav class="wrap masthead__nav" aria-label="Squeekscope">
+      <a class="masthead__tab" href="./" data-view-link="draw">Draw a card</a>
+      <a class="masthead__tab" href="?deck" data-view-link="deck">The deck</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <form class="ask" id="ask" novalidate>
+      <div class="ask__field ask__field--who">
+        <label for="who">Whose fortune?</label>
+        <input id="who" name="a" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="0x… any wallet address" aria-describedby="ask-note">
+      </div>
+      <div class="ask__field ask__field--day">
+        <label for="day">Day <abbr title="Coordinated Universal Time">UTC</abbr></label>
+        <input id="day" name="d" type="date" aria-describedby="ask-note">
+      </div>
+      <button class="btn btn--ink ask__draw" type="submit">Draw card</button>
+      <div class="ask__more">
+        <button class="btn btn--line" type="button" id="connect">Use my wallet</button>
+        <button class="btn btn--line" type="button" id="hamster-card">Squeektoshi's own card</button>
+      </div>
+      <p class="ask__note" id="ask-note" role="status" aria-live="polite"></p>
+    </form>
+
+    <section class="spread" id="reading" aria-label="Today's reading">
+      <div class="proof">
+        <p class="proof__slug" id="slug" aria-hidden="true">Wheel Arcana · plate unturned</p>
+        <div class="proof__sheet">
+          <span class="crop crop--tl" aria-hidden="true"></span>
+          <span class="crop crop--tr" aria-hidden="true"></span>
+          <span class="crop crop--bl" aria-hidden="true"></span>
+          <span class="crop crop--br" aria-hidden="true"></span>
+          <div class="tarot" id="tarot" role="img" aria-label="A face-down card" data-face="back" data-reversed="false">
+            <div class="tarot__inner">
+              <div class="tarot__face tarot__back" aria-hidden="true">
+                <svg class="back-art" viewBox="0 0 140 240">
+                  <defs>
+                    <path id="bk-seed" d="M70 63C74.2 67.6 74.4 74 70 78C65.6 74 65.8 67.6 70 63Z"/>
+                    <path id="bk-rung" d="M70 90V95"/>
+                    <path id="bk-spoke" d="M70 115V95"/>
+                    <path id="bk-spark" d="M0-4.6Q0.9-0.9 4.6 0Q0.9 0.9 0 4.6Q-0.9 0.9-4.6 0Q-0.9-0.9 0-4.6Z"/>
+                  </defs>
+                  <rect width="140" height="240" class="bk-field"/>
+                  <rect x="7" y="7" width="126" height="226" rx="5" class="bk-rule"/>
+                  <rect x="11.5" y="11.5" width="117" height="217" rx="2.5" class="bk-hair"/>
+                  <g class="bk-gold">
+                    <use href="#bk-seed"/><use href="#bk-seed" transform="rotate(30 70 120)"/><use href="#bk-seed" transform="rotate(60 70 120)"/>
+                    <use href="#bk-seed" transform="rotate(90 70 120)"/><use href="#bk-seed" transform="rotate(120 70 120)"/><use href="#bk-seed" transform="rotate(150 70 120)"/>
+                    <use href="#bk-seed" transform="rotate(180 70 120)"/><use href="#bk-seed" transform="rotate(210 70 120)"/><use href="#bk-seed" transform="rotate(240 70 120)"/>
+                    <use href="#bk-seed" transform="rotate(270 70 120)"/><use href="#bk-seed" transform="rotate(300 70 120)"/><use href="#bk-seed" transform="rotate(330 70 120)"/>
+                    <use href="#bk-spark" transform="translate(21 21)"/><use href="#bk-spark" transform="translate(119 21)"/>
+                    <use href="#bk-spark" transform="translate(21 219)"/><use href="#bk-spark" transform="translate(119 219)"/>
+                    <use href="#bk-spark" transform="translate(32 166) scale(.55)"/><use href="#bk-spark" transform="translate(108 74) scale(.55)"/>
+                    <path d="M40 120a30 30 0 1 0 60 0a30 30 0 1 0-60 0ZM45 120a25 25 0 1 0 50 0a25 25 0 1 0-50 0Z" fill-rule="evenodd"/>
+                  </g>
+                  <g class="bk-line">
+                    <circle cx="70" cy="120" r="30"/><circle cx="70" cy="120" r="25"/>
+                    <use href="#bk-rung"/><use href="#bk-rung" transform="rotate(15 70 120)"/><use href="#bk-rung" transform="rotate(30 70 120)"/><use href="#bk-rung" transform="rotate(45 70 120)"/>
+                    <use href="#bk-rung" transform="rotate(60 70 120)"/><use href="#bk-rung" transform="rotate(75 70 120)"/><use href="#bk-rung" transform="rotate(90 70 120)"/><use href="#bk-rung" transform="rotate(105 70 120)"/>
+                    <use href="#bk-rung" transform="rotate(120 70 120)"/><use href="#bk-rung" transform="rotate(135 70 120)"/><use href="#bk-rung" transform="rotate(150 70 120)"/><use href="#bk-rung" transform="rotate(165 70 120)"/>
+                    <use href="#bk-rung" transform="rotate(180 70 120)"/><use href="#bk-rung" transform="rotate(195 70 120)"/><use href="#bk-rung" transform="rotate(210 70 120)"/><use href="#bk-rung" transform="rotate(225 70 120)"/>
+                    <use href="#bk-rung" transform="rotate(240 70 120)"/><use href="#bk-rung" transform="rotate(255 70 120)"/><use href="#bk-rung" transform="rotate(270 70 120)"/><use href="#bk-rung" transform="rotate(285 70 120)"/>
+                    <use href="#bk-rung" transform="rotate(300 70 120)"/><use href="#bk-rung" transform="rotate(315 70 120)"/><use href="#bk-rung" transform="rotate(330 70 120)"/><use href="#bk-rung" transform="rotate(345 70 120)"/>
+                    <use href="#bk-spoke" transform="rotate(30 70 120)"/><use href="#bk-spoke" transform="rotate(90 70 120)"/><use href="#bk-spoke" transform="rotate(150 70 120)"/>
+                    <use href="#bk-spoke" transform="rotate(210 70 120)"/><use href="#bk-spoke" transform="rotate(270 70 120)"/><use href="#bk-spoke" transform="rotate(330 70 120)"/>
+                  </g>
+                  <circle cx="70" cy="120" r="5" class="bk-hub"/>
+                  <text x="70" y="40" class="bk-title">SQUEEKSCOPE</text>
+                  <text x="70" y="206" class="bk-sub">THE WHEEL ARCANA</text>
+                </svg>
+              </div>
+              <div class="tarot__face tarot__front">
+                <div class="plate">
+                  <span class="plate__corner plate__corner--tl" aria-hidden="true"></span>
+                  <span class="plate__corner plate__corner--tr" aria-hidden="true"></span>
+                  <span class="plate__corner plate__corner--bl" aria-hidden="true"></span>
+                  <span class="plate__corner plate__corner--br" aria-hidden="true"></span>
+                  <span class="plate__numeral" id="plate-numeral"></span>
+                  <div class="plate__window">
+                    <div class="plate__art" id="plate-window"></div>
+                    <span class="plate__stamp" id="plate-stamp">Reversed</span>
+                  </div>
+                  <span class="plate__name" id="plate-name"></span>
+                  <span class="plate__rule" aria-hidden="true"></span>
+                  <span class="plate__motto" id="plate-motto"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="inkbar" aria-hidden="true">
+          <span class="inkbar__chip inkbar__chip--ink"></span>
+          <span class="inkbar__chip inkbar__chip--ox"></span>
+          <span class="inkbar__chip inkbar__chip--gold"></span>
+          <span class="inkbar__chip inkbar__chip--spot" id="spot-chip"></span>
+          <span class="inkbar__label" id="spot-label">spot ink: not yet drawn</span>
+        </div>
+      </div>
+
+      <div class="verdict" id="verdict">
+        <aside class="spot" id="spot" aria-labelledby="spot-title">
+          <p class="spot__title" id="spot-title">The hamster drew first.</p>
+          <p class="spot__line" id="spot-line">This is Squeektoshi's own card for today, cut from the wheel work he settled on Sepolia. Every wallet gets a card of its own from the same cut, and nobody picks it.</p>
+          <button class="btn btn--ink" type="button" id="spot-go">Now draw yours</button>
+        </aside>
+
+        <div class="verdict__state" data-state="idle">
+          <p class="eyebrow">The deck is shuffled</p>
+          <h1 class="verdict__headline">Name a wallet to cut the deck.</h1>
+          <p class="verdict__lede">Every day at 00:00 UTC each address gets one card from the Wheel Arcana. The cut comes from the hamster himself: the last stretch of wheel work SqueekCore settled before the day began, hashed together with the address and the date. Same inputs, same card, for anyone who checks.</p>
+          <p class="verdict__lede verdict__lede--quiet">Paste any address, use your wallet (it only asks for the address, never a signature), or see what Squeektoshi drew for himself.</p>
+        </div>
+
+        <div class="verdict__state" data-state="loading" hidden>
+          <p class="eyebrow" id="loading-eyebrow">Reading the ledger</p>
+          <h1 class="verdict__headline">Counting laps…</h1>
+          <p class="verdict__lede" id="loading-line">Fetching every settled round from SqueekCore on Sepolia.</p>
+        </div>
+
+        <div class="verdict__state" data-state="future" hidden>
+          <p class="eyebrow" id="future-eyebrow"></p>
+          <h1 class="verdict__headline">The wheel hasn't spoken yet.</h1>
+          <p class="verdict__lede" id="future-line"></p>
+        </div>
+
+        <div class="verdict__state" data-state="before" hidden>
+          <p class="eyebrow" id="before-eyebrow"></p>
+          <h1 class="verdict__headline">Before the wheel.</h1>
+          <p class="verdict__lede">Squeektoshi clocked in on 26 October 2026 at 13:50 UTC. Nothing was mined before that, so there is nothing to read. Pick a day from 26 October 2026 onward.</p>
+        </div>
+
+        <div class="verdict__state" data-state="error" hidden>
+          <p class="eyebrow">The ledger didn't answer</p>
+          <h1 class="verdict__headline">No card without the chain.</h1>
+          <p class="verdict__lede" id="error-line"></p>
+          <button class="btn btn--ink" type="button" id="retry">Try again</button>
+        </div>
+
+        <article class="verdict__state" data-state="drawn" hidden>
+          <p class="eyebrow" id="v-eyebrow"></p>
+          <h1 class="verdict__title" tabindex="-1"><span class="verdict__numeral" id="v-numeral"></span> <span id="v-name"></span></h1>
+          <p class="verdict__orient" id="v-orient"></p>
+          <p class="verdict__keys" id="v-keys"></p>
+          <p class="verdict__meaning" id="v-meaning"></p>
+          <blockquote class="verdict__omen"><p id="v-omen"></p></blockquote>
+          <dl class="facts">
+            <div class="facts__row">
+              <dt>Lucky round</dt>
+              <dd><strong id="v-lucky"></strong><span class="facts__aside" id="v-lucky-note"></span></dd>
+            </div>
+            <div class="facts__row">
+              <dt>Lucky colour</dt>
+              <dd><span class="swatch" id="v-swatch" aria-hidden="true"></span><strong id="v-colour"></strong><span class="facts__aside" id="v-colour-note"></span></dd>
+            </div>
+            <div class="facts__row">
+              <dt>Wheel energy</dt>
+              <dd><span class="pips" id="v-pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><strong id="v-energy"></strong><span class="facts__aside" id="v-energy-note"></span></dd>
+            </div>
+          </dl>
+          <p class="seal" id="v-seal"></p>
+          <div class="verdict__actions">
+            <button class="btn btn--ink" type="button" id="save">Save image</button>
+            <a class="btn btn--line" id="share" href="https://x.com/intent/post" target="_blank" rel="noopener noreferrer">Post on X</a>
+            <button class="btn btn--line" type="button" id="copy-link">Copy link</button>
+          </div>
+          <p class="verdict__hint">The image is drawn in your browser at 1080 × 1350 and never uploaded. X can't take an attachment from a link, so save it first and add it to the post yourself.</p>
+          <p class="verdict__next" id="v-next"></p>
+
+          <form class="pair" id="pair" novalidate>
+            <label class="pair__label" for="partner">Read it against a second wallet <span class="pair__opt">optional</span></label>
+            <div class="pair__row">
+              <input id="partner" name="b" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="0x… a friend, a rival, a contract" aria-describedby="pair-note">
+              <button class="btn btn--line" type="submit">Read the pair</button>
+            </div>
+            <p class="pair__note" id="pair-note" role="status" aria-live="polite"></p>
+          </form>
+          <div class="pair__result" id="pair-result" hidden>
+            <p class="eyebrow" id="pair-eyebrow">Wheel compatibility</p>
+            <div class="pair__cards" id="pair-cards"></div>
+            <p class="pair__score"><strong id="pair-score"></strong><span class="pair__outof">/100</span> <span class="pair__band" id="pair-band"></span></p>
+            <p class="pair__text" id="pair-text"></p>
+            <p class="pair__text pair__text--round" id="pair-round"></p>
+            <button class="btn btn--line pair__clear" type="button" id="pair-clear">Clear second wallet</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="week" id="week" aria-labelledby="week-title" hidden>
+      <h2 class="section-title" id="week-title">Your week</h2>
+      <p class="week__lede" id="week-lede"></p>
+      <ol class="week__row" id="week-row"></ol>
+      <p class="week__note" id="week-note"></p>
+    </section>
+
+    <section class="sky" id="sky" aria-labelledby="sky-title">
+      <div class="sky__art" id="sky-art" aria-hidden="true"></div>
+      <div class="sky__body">
+        <p class="eyebrow">Tonight's moon · live from the WHEELY9000</p>
+        <h2 class="sky__title" id="sky-title">Looking for the hamster…</h2>
+        <p class="sky__line" id="sky-line">Asking the Squeekchain API what the wheel is doing.</p>
+        <dl class="dials">
+          <div class="dials__cell"><dt>Wheel</dt><dd id="sky-rpm">–</dd></div>
+          <div class="dials__cell"><dt>Today</dt><dd id="sky-km">–</dd></div>
+          <div class="dials__cell"><dt>Feed</dt><dd id="sky-fresh">–</dd></div>
+          <div class="dials__cell"><dt>Round</dt><dd id="sky-round">–</dd></div>
+        </dl>
+        <p class="sky__habit">He mostly runs 21:00 to 03:00 and 05:30 to 07:00 UTC<span id="sky-local"></span>, and some nights not at all. The moon phase is mood only: it never changes a card.</p>
+      </div>
+    </section>
+
+    <section class="workings" id="workings" aria-labelledby="workings-title">
+      <h2 class="section-title" id="workings-title">How this card was drawn</h2>
+      <p class="workings__lede" id="w-lede">Draw a card and every input shows up here: the round it was cut from, the settlement transaction, the hash, the arithmetic. Nothing is hidden and nothing is random.</p>
+      <ol class="steps" id="w-steps" hidden>
+        <li class="steps__item">
+          <span class="steps__label">Day</span>
+          <span class="steps__body"><code id="w-day"></code> UTC starts at unix <code id="w-start"></code>.</span>
+        </li>
+        <li class="steps__item">
+          <span class="steps__label">First round of the day</span>
+          <span class="steps__body"><code>floor((<span id="w-start-2"></span> − <span id="w-genesis"></span>) / <span id="w-duration"></span>) + 1</code> = <code id="w-first"></code></span>
+        </li>
+        <li class="steps__item">
+          <span class="steps__label">Anchor round</span>
+          <span class="steps__body">
+            <span id="w-anchor-why"></span> Round <code id="w-anchor"></code>, dataHash <code class="hash" id="w-hash"></code>
+            <span class="steps__sub" id="w-tx-line">Settled in <a id="w-tx" target="_blank" rel="noopener noreferrer"></a><span id="w-tx-when"></span>.</span>
+          </span>
+        </li>
+        <li class="steps__item">
+          <span class="steps__label">Subject</span>
+          <span class="steps__body"><code class="hash" id="w-subject"></code></span>
+        </li>
+        <li class="steps__item">
+          <span class="steps__label">Seed</span>
+          <span class="steps__body">
+            <code>keccak256(abi.encodePacked(bytes32 dataHash, address subject, string "<span id="w-day-2"></span>"))</code>
+            <span class="steps__sub">= <code class="hash" id="w-seed"></code></span>
+          </span>
+        </li>
+        <li class="steps__item">
+          <span class="steps__label">What the seed decides</span>
+          <span class="steps__body">
+            <span class="steps__sub">Card: <code>seed mod 22</code> = <code id="w-card"></code></span>
+            <span class="steps__sub">Orientation: <code>seed &gt;&gt; 255</code> = <code id="w-orient"></code></span>
+            <span class="steps__sub">Lucky round: <code><span id="w-first-2"></span> + ((seed &gt;&gt; 64) mod <span id="w-perday"></span>)</code> = <code id="w-lucky"></code></span>
+            <span class="steps__sub">Lucky colour: <code>(seed &gt;&gt; 128) mod 12</code> = <code id="w-colour"></code></span>
+          </span>
+        </li>
+        <li class="steps__item">
+          <span class="steps__label">Wheel energy</span>
+          <span class="steps__body">Work in active rounds <code id="w-energy-range"></code>, the 24 hours before the day began: <code id="w-energy"></code></span>
+        </li>
+        <li class="steps__item" id="w-pair" hidden>
+          <span class="steps__label">Second wallet</span>
+          <span class="steps__body">
+            Same anchor round and day, other address <code class="hash" id="w-pair-subject"></code>
+            <span class="steps__sub">Its seed: <code class="hash" id="w-pair-seed"></code>, so its card is <code id="w-pair-card"></code></span>
+            <span class="steps__sub">Distance round the wheel: <code id="w-pair-distance"></code></span>
+            <span class="steps__sub">Compatibility: <code>(11 − distance) × 8 + (same way up ? 12 : 0)</code> = <code id="w-pair-score"></code></span>
+            <span class="steps__sub">Pair seed: <code>keccak256(abi.encodePacked(bytes32 lower seed, bytes32 higher seed))</code> = <code class="hash" id="w-pair-seed2"></code>, the same whichever wallet goes first</span>
+            <span class="steps__sub">Shared round: <code><span id="w-pair-first"></span> + ((pair seed &gt;&gt; 64) mod <span id="w-pair-perday"></span>)</code> = <code id="w-pair-round"></code></span>
+          </span>
+        </li>
+      </ol>
+      <details class="recompute" id="w-recompute" hidden>
+        <summary>Recompute this card in node</summary>
+        <p>Needs node 18+ and <code>npm i viem@2.21.55</code>. The full script, which finds the anchor round itself, is in the README.</p>
+        <pre><code id="w-snippet"></code></pre>
+        <button class="btn btn--line" type="button" id="copy-snippet">Copy snippet</button>
+      </details>
+      <p class="workings__source" id="w-source"></p>
+    </section>
+
+    <section class="deck" id="deck" aria-labelledby="deck-title">
+      <div class="deck__head">
+        <div class="deck__intro">
+          <h2 class="section-title" id="deck-title" tabindex="-1">The Wheel Arcana</h2>
+          <p class="deck__lede deck__lede--draw">Twenty-two cards, one per day per address. Tap a card to read both ways up, or <a href="?deck" data-view-link="deck">lay out the whole deck</a> with every card's two readings.</p>
+          <p class="deck__lede deck__lede--deck">Every address gets one of these twenty-two cards a day, upright or reversed, cut from Squeektoshi's settled wheel work. This is what each one says both ways up. Tap a card for its full reading and omen.</p>
+        </div>
+        <a class="btn btn--ink deck__draw" href="./" data-view-link="draw">Draw your card</a>
+      </div>
+      <ul class="deck__grid" id="deck-grid"></ul>
+      <div class="deck__foot">
+        <p>Nobody picks the card, including us. The same wallet on the same day always gets the same plate, and anyone can recompute it from Sepolia.</p>
+        <a class="btn btn--line" href="./" data-view-link="draw">Draw your card</a>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="leaf" id="leaf" aria-labelledby="leaf-name">
+    <form method="dialog" class="leaf__close-row"><button class="btn btn--line leaf__close" value="close">Close</button></form>
+    <div class="leaf__art" id="leaf-art"></div>
+    <p class="eyebrow" id="leaf-numeral"></p>
+    <h2 class="leaf__name" id="leaf-name"></h2>
+    <p class="verdict__keys" id="leaf-keys"></p>
+    <h3 class="leaf__way">Upright</h3>
+    <p id="leaf-upright"></p>
+    <h3 class="leaf__way">Reversed</h3>
+    <p id="leaf-reversed"></p>
+    <blockquote class="verdict__omen"><p id="leaf-omen"></p></blockquote>
+  </dialog>
+
+  <footer class="colophon">
+    <div class="wrap colophon__row">
+      <p>Squeekscope only reads public Sepolia testnet data: no keys, no signatures, no transactions, nothing worth money. A card is a joke with receipts, not advice.</p>
+      <p>Data from <a href="https://api.squeekchain.com/v1/status" rel="noopener">api.squeekchain.com</a> and SqueekCore <a id="core-link" href="https://sepolia.etherscan.io/address/0x980b4424c007caf7a1f3670b48c8eaef7ebc3d44" target="_blank" rel="noopener noreferrer">0x980b…3d44</a>. About the hamster: <a href="https://docs.squeekchain.com" rel="noopener">docs.squeekchain.com</a>. Open source under the MIT licence.</p>
+    </div>
+  </footer>
+  <canvas id="press" width="1080" height="1350" hidden></canvas>
+</body>
+</html>
